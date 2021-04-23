@@ -1,17 +1,17 @@
 package newsanalyzer.ctrl;
 
 import newsapi.NewsApi;
-import newsapi.NewsApiBuilder;
 import newsapi.NewsApiException;
 import newsapi.beans.Article;
 import newsapi.beans.NewsReponse;
-import newsapi.enums.Category;
-import newsapi.enums.Country;
-import newsapi.enums.Endpoint;
-import newsapi.enums.Language;
+
 
 import java.util.*;
 import java.util.stream.Collectors;
+
+/**
+ * URL https://github.com/AliakseiBelabrovik/NewsAnalyzer.git
+ */
 
 public class Controller {
 
