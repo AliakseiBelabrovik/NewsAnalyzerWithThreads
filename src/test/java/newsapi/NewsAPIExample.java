@@ -8,9 +8,12 @@ import newsapi.enums.Endpoint;
 
 import java.util.List;
 
+/**
+ * I changed date in newsApi in .setFrom from 2020-03-20 to 2021-03-20
+ */
 public class NewsAPIExample {
 
-    public static final String APIKEY = "myAPIKey";
+    public static final String APIKEY = "0e38054687cf4b65a10ca66a05a6885e";
 
     public static void main(String[] args){
 
@@ -21,25 +24,31 @@ public class NewsAPIExample {
                 .setSourceCountry(Country.at)
                 .setSourceCategory(Category.health)
                 .createNewsApi();
+        try {
+                NewsReponse newsResponse = newsApi.getNews();
+                if(newsResponse != null){
+                    List<Article> articles = newsResponse.getArticles();
+                    articles.stream().forEach(article -> System.out.println(article.toString()));
+                }
 
-            NewsReponse newsResponse = newsApi.getNews();
-            if(newsResponse != null){
-                List<Article> articles = newsResponse.getArticles();
-                articles.stream().forEach(article -> System.out.println(article.toString()));
-            }
 
-        newsApi = new NewsApiBuilder()
-                .setApiKey(APIKEY)
-                .setQ("corona")
-                .setEndPoint(Endpoint.EVERYTHING)
-                .setFrom("2020-03-20")
-                .setExcludeDomains("Lifehacker.com")
-                .createNewsApi();
+                newsApi = new NewsApiBuilder()
+                        .setApiKey(APIKEY)
+                        .setQ("corona")
+                        .setEndPoint(Endpoint.EVERYTHING)
+                        .setFrom("2021-04-10")
+                        .setExcludeDomains("Lifehacker.com")
+                        .createNewsApi();
 
-            newsResponse = newsApi.getNews();
-        if(newsResponse != null){
-            List<Article> articles = newsResponse.getArticles();
-            articles.stream().forEach(article -> System.out.println(article.toString()));
+                    newsResponse = newsApi.getNews();
+                if(newsResponse != null){
+                    List<Article> articles = newsResponse.getArticles();
+                    articles.stream().forEach(article -> System.out.println(article.toString()));
+                }
+
+        } catch (NewsApiException newsApiException) {
+                System.out.println("This is NewsApiException: " + newsApiException.getMessage());
         }
+
     }
 }
