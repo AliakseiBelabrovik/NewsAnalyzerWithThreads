@@ -7,8 +7,6 @@ import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
-import java.util.function.Consumer;
-import java.util.function.Function;
 
 import newsanalyzer.ctrl.Controller;
 import newsapi.NewsApi;
@@ -16,12 +14,14 @@ import newsapi.NewsApiBuilder;
 import newsapi.NewsApiException;
 import newsapi.enums.*;
 
+/**
+ * URL https://github.com/AliakseiBelabrovik/NewsAnalyzer.git
+ */
 public class UserInterface {
 
 	private static final String APIKEY = "0e38054687cf4b65a10ca66a05a6885e";
 	private Controller ctrl = new Controller();
 	private Scanner scanner = new Scanner(System.in);
-	Consumer consumer;
 
 
 
