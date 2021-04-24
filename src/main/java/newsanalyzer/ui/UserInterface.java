@@ -24,6 +24,7 @@ public class UserInterface {
 	Consumer consumer;
 
 
+
 	public void getDataFromCtrl1() {
 		System.out.println("50 Headlines in Austria sorted by publication date");
 
@@ -82,11 +83,10 @@ public class UserInterface {
 	}
 
 
-
+	/**
+	 * The user is able to choose a phrase or a keyword to search for. All other parameter are already predefined.
+	 */
 	public void getDataForCustomInput() {
-
-		System.out.println(readLine());
-
 		System.out.print("You have chosen User Input. Please insert a keyword or a phrase to search for in the articles: ");
 
 		List<String> inputList = Arrays.asList(scanner.nextLine().split(" "));
@@ -111,18 +111,10 @@ public class UserInterface {
 		}
 	}
 
-	/*
-	public void getDataDDD(){
-		NewsApi newsApi = null;
-		NewsApiBuilder newsApiBuilder = new NewsApiBuilder();
-		//consumer.accept();
 
-	}
-
+	/**
+	 * Method that allows the user to define his/her search by choosing parameters.
 	 */
-
-
-
 	public void getDataDefinedByUser() {
 		System.out.println("You have chosen to define the request by yourself. Please enter the endpoint you " +
 				"want to request: everything or top headlines. " + System.lineSeparator() +
@@ -173,6 +165,10 @@ public class UserInterface {
 		}
 	}
 
+	/**
+	 * Method to ask for a q and url-encode the user's input
+	 * @return - returns a String that is url-encoded to be used in a URL
+	 */
 	public String askForQ() {
 		System.out.print("Please insert a keyword or a phrase to search for in the articles: ");
 		List<String> inputList = Arrays.asList(scanner.nextLine().split(" "));
@@ -197,8 +193,8 @@ public class UserInterface {
 			default:
 				return Country.at;
 		}
-
 	}
+
 	public Category askForCategory() {
 		System.out.print("Please choose one category among: health, business, entertainment, science, sports, " +
 				"technology or general: ");
@@ -221,7 +217,6 @@ public class UserInterface {
 		}
 	}
 
-
 	public Language askForLanguage() {
 		System.out.print("Please choose one of the following languages: de, it, fr, ru, es or en: ");
 		String country = readLine();
@@ -240,6 +235,7 @@ public class UserInterface {
 				return Language.de;
 		}
 	}
+
 	public SortBy askForSortBy() {
 		System.out.print("Please choose one category among: popularity, relevancy or publishedAt: ");
 		String country = readLine();
@@ -259,10 +255,6 @@ public class UserInterface {
 		return Integer.toString(dNumber.intValue());
 
 	}
-
-
-
-
 
 	public void start() {
 		Menu<Runnable> menu = new Menu<>("User Interface");

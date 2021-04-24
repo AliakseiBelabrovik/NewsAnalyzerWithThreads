@@ -8,6 +8,7 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 
 public class NewsApi {
 
@@ -103,8 +104,48 @@ public class NewsApi {
         this.endpoint = endpoint;
     }
 
+    /**
+     * Reads the contents of the URL and saves in a specified file in local machine
+     * @param path - is String with the path and name of the file to write to
+     * @throws NewsApiException
+     */
+    public void saveArticlesLocallyInHtml(String path) throws NewsApiException {
+        String url = buildURL();
+        URL obj = null;
+
+        try {
+            obj = new URL(url);
+        } catch (MalformedURLException e) {
+            throw new NewsApiException("The URL is malformed. Please check the URL you use.");
+        }
+
+        try {
+            URLConnection conn = obj.openConnection();
+            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            String inputLine;
+            String fileName = path;
+            File file = new File(fileName);
+            //if no such file exists, create this file
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+            FileWriter fw = new FileWriter(file.getAbsoluteFile());
+            BufferedWriter bw = new BufferedWriter(fw);
+            while ((inputLine = br.readLine()) != null) {
+                bw.write(inputLine);
+            }
+            bw.close();;
+            br.close();
+            System.out.println("Your file is saved in " + fileName + " location.");
+
+
+        } catch (IOException ioException) {
+            throw new NewsApiException("Impossible to write to the file. Please check the path and filename.");
+        }
+
+    }
+
     protected String requestData() throws NewsApiException {
-        NewsApiException newsApiException = null;
         String url = buildURL();
         System.out.println("URL: "+url);
         URL obj = null;
@@ -115,6 +156,8 @@ public class NewsApi {
             //e.printStackTrace();
             throw new NewsApiException("The URL is malformed. Please check the URL you use.");
         }
+
+
         HttpURLConnection con;
         StringBuilder response = new StringBuilder();
         try {
@@ -126,31 +169,19 @@ public class NewsApi {
             }
             in.close();
         } catch (IOException e) {
-            // TOOO improve ErrorHandling
-            //System.out.println("/////Error "+e.getMessage());
             throw new NewsApiException("The required information is not available. Please refine or modify " +
                     "your search/parameters.");
         }
         return response.toString();
     }
 
-    protected String buildURL() {
+    protected String buildURL() throws NewsApiException {
         // TODO ErrorHandling
-
-        try {
 
             if (getEndpoint() == null)
                 throw new NewsApiException("This is NewsApiException: Endpoint was not defined or defined illegally." +
                         "Please try again.");
 
-/*
-            String urlbase = null;
-            if (getEndpoint().getValue().equals(Endpoint.TOP_HEADLINES)) {
-                urlbase = String.format(NEWS_API_URL, "top-headlines", getQ(), getApiKey());
-            } else {
-                urlbase = String.format(NEWS_API_URL,getEndpoint().getValue(),getQ(),getApiKey());
-            }
- */
             String urlbase = String.format(NEWS_API_URL,getEndpoint().getValue(),getQ(),getApiKey());
 
 
@@ -190,10 +221,7 @@ public class NewsApi {
                 sb.append(DELIMITER).append("sortBy=").append(getSortBy());
             }
             return sb.toString();
-        } catch (NewsApiException newsApiException) {
-            System.out.println(newsApiException.getMessage());
-            return null;
-        }
+
     }
 
     public NewsReponse getNews() throws NewsApiException {
@@ -210,17 +238,9 @@ public class NewsApi {
                         System.out.println("Error: "+newsReponse.getStatus());
                     }
                 } catch (JsonProcessingException e) {
-                    //System.out.println("Error: "+e.getMessage());
-                    throw new NewsApiException("Problem of processing the Json by getting news data");
+                    throw new NewsApiException("Problem with processing the Json when loading news data");
                 }
             }
-        /*
-        } catch (NewsApiException newsApiException) {
-
-            System.out.println("This is NewsApiException: " + newsApiException.getMessage());
-        }
-        */
-
         //TODO improve Errorhandling
         return newsReponse;
     }
