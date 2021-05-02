@@ -8,10 +8,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.Objects;
 
-/**
- * Strategy Pattern
- * Create each strategy objects with superclass reference
- */
+
 public abstract class Downloader {
 
     public static final String HTML_EXTENTION = ".html";
@@ -57,18 +54,18 @@ public abstract class Downloader {
             }
         } catch (IOException e) {
             //e.printStackTrace();
-            throw new DownloadException("This is DownloadException: Unable to create a file with a name "
-                    +  DIRECTORY_DOWNLOAD + fileName +".");
+            throw new DownloadException("Unable to create a file with a name "
+                    +  DIRECTORY_DOWNLOAD + fileName +". Please change or specify the file path.");
             //System.out.println("####################### " +  DIRECTORY_DOWNLOAD + fileName + " ##########################");
         } finally {
             try {
                 Objects.requireNonNull(is).close();
                 Objects.requireNonNull(os).close();
             } catch (IOException e) {
-                throw new DownloadException("This is DownloadException: Unable to close the streams, " +
+                throw new DownloadException("Unable to close the streams, " +
                         "possibly because no file was created.");
             } catch (NullPointerException nullPointerException) {
-                throw new DownloadException("This is DownloadException: FileOutputStream is null, because not " +
+                throw new DownloadException("FileOutputStream is null, because not " +
                         "no file was created. Unable to close it");
             }
         }

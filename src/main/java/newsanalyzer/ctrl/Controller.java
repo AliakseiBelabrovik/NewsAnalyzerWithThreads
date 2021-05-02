@@ -13,7 +13,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * URL https://github.com/AliakseiBelabrovik/NewsAnalyzer.git
+ * URL https://github.com/AliakseiBelabrovik/NewsAnalyzerWithThreads.git
  */
 
 public class Controller {

@@ -19,7 +19,7 @@ import newsreader.downloader.ParallelDownloader;
 import newsreader.downloader.SequentialDownloader;
 
 /**
- * URL https://github.com/AliakseiBelabrovik/NewsAnalyzer.git
+ * URL  https://github.com/AliakseiBelabrovik/NewsAnalyzerWithThreads.git
  */
 public class UserInterface {
 
@@ -37,7 +37,7 @@ public class UserInterface {
 					.setQ("")
 					.setEndPoint(Endpoint.TOP_HEADLINES)
 					.setSourceCountry(Country.at)
-					.setFrom("2021-04-10")
+					.setFrom("2021-04-20")
 					.setExcludeDomains("Lifehacker.com")
 					.setPageSize("50")
 					.setSortBy(SortBy.publishedAt)
