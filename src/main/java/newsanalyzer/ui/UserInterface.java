@@ -13,6 +13,10 @@ import newsapi.NewsApi;
 import newsapi.NewsApiBuilder;
 import newsapi.NewsApiException;
 import newsapi.enums.*;
+import newsreader.downloader.DownloadException;
+import newsreader.downloader.Downloader;
+import newsreader.downloader.ParallelDownloader;
+import newsreader.downloader.SequentialDownloader;
 
 /**
  * URL https://github.com/AliakseiBelabrovik/NewsAnalyzer.git
@@ -256,6 +260,30 @@ public class UserInterface {
 
 	}
 
+
+	public void downloadLastSearch() {
+		System.out.println("You have chosen to download URLs of the last search.");
+		Downloader downloader = new SequentialDownloader();
+		try {
+			ctrl.downloadSequential(downloader);
+		} catch (DownloadException downloadException) {
+			System.out.println("This is NewsApiException: " + downloadException.getMessage());
+		}
+		System.out.println("Saving is completed.");
+	}
+
+	public void downloadLastSearchParallel() {
+		System.out.println("You have chosen to download URLs of the last search.");
+		Downloader downloader = new ParallelDownloader();
+		try {
+			ctrl.downloadSequential(downloader);
+		} catch (DownloadException downloadException) {
+			System.out.println("This is NewsApiException: " + downloadException.getMessage());
+		}
+		System.out.println("Saving is completed.");
+	}
+
+
 	public void start() {
 		Menu<Runnable> menu = new Menu<>("User Interface");
 		menu.setTitel("Wählen Sie aus:");
@@ -264,6 +292,8 @@ public class UserInterface {
 		menu.insert("c", "Headlines about Corona in category health", this::getDataFromCtrl3);
 		menu.insert("d", "Enter a phrase or a word to search for:",this::getDataForCustomInput);
 		menu.insert("e", "Configure your own search", this::getDataDefinedByUser);
+		menu.insert("f", "Download last search sequentially",this::downloadLastSearch);
+		menu.insert("g", "Download last search parallel", this::downloadLastSearchParallel);
 		menu.insert("q", "Quit", null);
 		Runnable choice;
 		while ((choice = menu.exec()) != null) {

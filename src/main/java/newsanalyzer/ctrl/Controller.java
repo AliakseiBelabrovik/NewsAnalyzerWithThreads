@@ -4,6 +4,9 @@ import newsapi.NewsApi;
 import newsapi.NewsApiException;
 import newsapi.beans.Article;
 import newsapi.beans.NewsReponse;
+import newsreader.downloader.DownloadException;
+import newsreader.downloader.Downloader;
+import newsreader.downloader.SequentialDownloader;
 
 
 import java.util.*;
@@ -16,6 +19,8 @@ import java.util.stream.Collectors;
 public class Controller {
 
 	public static final String APIKEY = "0e38054687cf4b65a10ca66a05a6885e";
+	private List<Article> lastSearch;
+
 
 	public void process(NewsApi newsApi) throws NewsApiException {
 		System.out.println("Start process");
@@ -57,8 +62,12 @@ public class Controller {
 		 * Please specify the path and name of the document
 		 */
 		writeToFile(newsApi,"D:\\FH Campus Wien\\2_Semester\\0_Programmieren 2\\2_Übungen" +
-				"\\3_ExceptionsLambdaStreams\\test.html");
+				"\\4_Threads\\test.html");
 
+
+
+		//save the last research
+		lastSearch = articlesList;
 
 		System.out.println("End process");
 	}
@@ -192,5 +201,45 @@ public class Controller {
 	public void writeToFile(NewsApi newsApi, String path) throws NewsApiException {
 		newsApi.saveArticlesLocallyInHtml(path);
 	}
+
+
+	/**
+	 * save all URLs of the articles in one list and return it
+	 *
+	 */
+	public List<String> saveURLsInList() {
+		return lastSearch
+				.stream()
+				.filter(Objects::nonNull)
+				.map(Article::getUrl)
+				.collect(Collectors.toList());
+	}
+
+	/**
+	 * Speichere übergebene Listen sequenziell ab
+	 */
+	public void downloadSequential(Downloader downloader) throws DownloadException {
+		//Downloader downloader = new SequentialDownloader();
+		long start = System.currentTimeMillis();
+		int number = downloader.process(saveURLsInList());
+		System.out.println("'''''''''''''''''''''''");
+		System.out.println("Number of saved URLs is " + number);
+		System.out.println("'''''''''''''''''''''''");
+		long end = System.currentTimeMillis();
+		System.out.println("Elapsed time in milliseconds: "+ (end - start));
+	}
+
+	/*
+	public void downloadParallel(Downloader downloader) {
+		int number = downloader.process(saveURLsInList());
+		System.out.println("'''''''''''''''''''''''");
+		System.out.println("Number of saved URLs is " + number);
+		System.out.println("'''''''''''''''''''''''");
+	}
+
+	 */
+
+
+
 
 }
