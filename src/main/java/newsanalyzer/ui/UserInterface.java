@@ -260,26 +260,27 @@ public class UserInterface {
 
 	}
 
-
-	public void downloadLastSearch() {
+	/**
+	 * Allows the user to download the articles sequentially
+	 * Creates a new SequentialDownloader of Type Downloader, then calls controller and catches
+	 * exceptions, if any.
+	 */
+	public void downloadLastSearchSequentially() {
 		System.out.println("You have chosen to download URLs of the last search.");
 		Downloader downloader = new SequentialDownloader();
-		try {
-			ctrl.downloadSequential(downloader);
-		} catch (DownloadException downloadException) {
-			System.out.println("This is NewsApiException: " + downloadException.getMessage());
-		}
+		ctrl.downloadArticles(downloader);
 		System.out.println("Saving is completed.");
 	}
 
+	/**
+	 * Allows to download the articles in parallel.
+	 * Creates a new SequentialDownloader of Type Downloader, then calls controller and catches
+	 * exceptions, if any.
+	 */
 	public void downloadLastSearchParallel() {
 		System.out.println("You have chosen to download URLs of the last search.");
 		Downloader downloader = new ParallelDownloader();
-		try {
-			ctrl.downloadSequential(downloader);
-		} catch (DownloadException downloadException) {
-			System.out.println("This is NewsApiException: " + downloadException.getMessage());
-		}
+		ctrl.downloadArticles(downloader);
 		System.out.println("Saving is completed.");
 	}
 
@@ -292,7 +293,7 @@ public class UserInterface {
 		menu.insert("c", "Headlines about Corona in category health", this::getDataFromCtrl3);
 		menu.insert("d", "Enter a phrase or a word to search for:",this::getDataForCustomInput);
 		menu.insert("e", "Configure your own search", this::getDataDefinedByUser);
-		menu.insert("f", "Download last search sequentially",this::downloadLastSearch);
+		menu.insert("f", "Download last search sequentially",this::downloadLastSearchSequentially);
 		menu.insert("g", "Download last search parallel", this::downloadLastSearchParallel);
 		menu.insert("q", "Quit", null);
 		Runnable choice;

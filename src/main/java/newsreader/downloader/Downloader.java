@@ -12,14 +12,18 @@ import java.util.Objects;
 public abstract class Downloader {
 
     public static final String HTML_EXTENTION = ".html";
+
+    /**
+     * path to download folder in the project
+     */
     public static final String DIRECTORY_DOWNLOAD = "D:\\FH Campus Wien\\2_Semester\\0_Programmieren 2\\" +
             "2_Übungen\\4_Threads\\Code\\src\\main\\java"+File.separator+"download"+File.separator;
 
-    public abstract int process(List<String> urls) throws DownloadException;
+    public abstract int process(List<String> urls);
 
 
 
-    public String saveUrl2File(String urlString) throws DownloadException {
+    public String saveUrl2File(String urlString) {
         InputStream is = null;
         OutputStream os = null;
         String fileName = "";
@@ -33,13 +37,11 @@ public abstract class Downloader {
             }
 
             /**
-             *
+             *if any file's endings are not html -> add html
              */
-
             if (!fileName.endsWith(".html")){
                 fileName = fileName + HTML_EXTENTION;
             }
-
 
             //System.out.println("FILE NAME AFTER Substring is " + fileName);
             //System.out.println("with adding download: " + DIRECTORY_DOWNLOAD + fileName);
@@ -53,19 +55,17 @@ public abstract class Downloader {
                 os.write(b, 0, length);
             }
         } catch (IOException e) {
-            //e.printStackTrace();
-            throw new DownloadException("Unable to create a file with a name "
+            System.out.println("Unable to create a file with a name "
                     +  DIRECTORY_DOWNLOAD + fileName +". Please change or specify the file path.");
-            //System.out.println("####################### " +  DIRECTORY_DOWNLOAD + fileName + " ##########################");
         } finally {
             try {
                 Objects.requireNonNull(is).close();
                 Objects.requireNonNull(os).close();
             } catch (IOException e) {
-                throw new DownloadException("Unable to close the streams, " +
+                System.out.println("Unable to close the streams, " +
                         "possibly because no file was created.");
             } catch (NullPointerException nullPointerException) {
-                throw new DownloadException("FileOutputStream is null, because not " +
+                System.out.println("FileOutputStream is null, because not " +
                         "no file was created. Unable to close it");
             }
         }

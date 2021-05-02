@@ -13,7 +13,7 @@ public class Task implements Callable<String> {
     }
 
     @Override
-    public String call() throws DownloadException, Exception {
+    public String call() {
         return parallelDownloader.saveUrl2File(this.url);
     }
 }

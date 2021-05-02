@@ -203,9 +203,11 @@ public class Controller {
 	}
 
 
+
+
 	/**
 	 * save all URLs of the articles in one list and return it
-	 *
+	 * @return List of Strings (URLs)
 	 */
 	public List<String> saveURLsInList() {
 		return lastSearch
@@ -216,29 +218,18 @@ public class Controller {
 	}
 
 	/**
-	 * Speichere übergebene Listen sequenziell ab
+	 * Method thas is being called from UserInterface to make the downloader to process a particular strategy
+	 * (i.e. reference to Superclass Downloader) which is implemented differently in child classes
+	 * @param downloader - Object of Type Downloader to call the abstract process method
+	 * @throws DownloadException
 	 */
-	public void downloadSequential(Downloader downloader) throws DownloadException {
+	public void downloadArticles(Downloader downloader) {
 		//Downloader downloader = new SequentialDownloader();
 		long start = System.currentTimeMillis();
-		int number = downloader.process(saveURLsInList());
-		System.out.println("'''''''''''''''''''''''");
-		System.out.println("Number of saved URLs is " + number);
-		System.out.println("'''''''''''''''''''''''");
+		downloader.process(saveURLsInList());
 		long end = System.currentTimeMillis();
 		System.out.println("Elapsed time in milliseconds: "+ (end - start));
 	}
-
-	/*
-	public void downloadParallel(Downloader downloader) {
-		int number = downloader.process(saveURLsInList());
-		System.out.println("'''''''''''''''''''''''");
-		System.out.println("Number of saved URLs is " + number);
-		System.out.println("'''''''''''''''''''''''");
-	}
-
-	 */
-
 
 
 

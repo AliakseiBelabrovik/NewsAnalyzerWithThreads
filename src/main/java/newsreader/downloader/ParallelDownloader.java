@@ -8,45 +8,42 @@ import java.util.stream.Collectors;
 public class ParallelDownloader extends Downloader {
 
 
-
+    /**
+     * Process method creates a list of tasks (each article to be downloaded is treated as a separate task)
+     * Then, an ExecutorService is created to start a ThreadPool and invoke oll the task on the same time
+     * @param urls - list of URLs
+     * @return - int coung - number of articles that have been downloaded
+     * @throws DownloadException - throws Exception if processing of any threads was unsuccessful
+     */
     @Override
-    public int process(List<String> urls) throws DownloadException {
+    public int process(List<String> urls) {
 
         List<Task> taskList = new ArrayList<>();
         for (String url : urls) {
             taskList.add(new Task(this, url));
         }
-        //Eine wichtige statische Methode der Klasse Executors ist newCachedThreadPool().
-        // Das Ergebnis ist ein ExecutorService-Objekt,
-        // eine Implementierung von Executor mit der Methode execute(Runnable):
-        //Liefert einen Thread-Pool mit wachsender Größe.
-
         List<Future<String>> stringFuture = null;
         ExecutorService executorService = Executors.newCachedThreadPool();
         try {
             stringFuture = executorService.invokeAll(taskList);
         } catch (InterruptedException e) {
             //e.printStackTrace();
-            throw new DownloadException("Exception while invoking all threads for downloading articles.");
+            System.out.println("Exception while invoking all threads for downloading articles: " + e.getMessage());
         }
         executorService.shutdown();
 
-        //assert stringFuture != null;
         List<String> fileNames = new ArrayList<>();
-        //System.out.println("Size of filesNames is " + fileNames.size());
-        int count = 0;
-        //System.out.println("String Future size " + stringFuture.size());
-
-
-        for (int i = 0; i < stringFuture.size(); i++) {
+        int count = 0;;
+        for (Future<String> future : stringFuture) {
             try {
-                fileNames.add(stringFuture.get(i).get()); //firstly, gets the future object at index and then gets
+                fileNames.add(future.get()); //firstly, gets the future object at index and then gets
                 //the fileNames of callable which is a string
+                //Wartet auf das Ergebnis und gibt es dann zurück. Die Methode blockiert so lange, bis das Ergebnis da ist.
                 count++;
             } catch (InterruptedException e) {
-                throw new DownloadException("Unable to finish the thread. The thread was interrupted.");
+                System.out.println("Unable to finish the thread. The thread was interrupted: " + e.getMessage());
             } catch (ExecutionException e) {
-                throw new DownloadException("Exception while downloading the article.");
+                System.out.println("Exception while downloading the article: " + e.getMessage());
             }
 
 
