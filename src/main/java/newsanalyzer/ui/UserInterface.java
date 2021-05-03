@@ -18,7 +18,7 @@ import newsreader.downloader.ParallelDownloader;
 import newsreader.downloader.SequentialDownloader;
 
 /**
- * URL  https://github.com/AliakseiBelabrovik/NewsAnalyzerWithThreads.git
+ * https://github.com/AliakseiBelabrovik/NewsAnalyzerWithThreads.git
  */
 public class UserInterface {
 
