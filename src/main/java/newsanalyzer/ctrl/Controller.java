@@ -4,9 +4,7 @@ import newsapi.NewsApi;
 import newsapi.NewsApiException;
 import newsapi.beans.Article;
 import newsapi.beans.NewsReponse;
-import newsreader.downloader.DownloadException;
 import newsreader.downloader.Downloader;
-import newsreader.downloader.SequentialDownloader;
 
 
 import java.util.*;
@@ -19,6 +17,9 @@ import java.util.stream.Collectors;
 public class Controller {
 
 	public static final String APIKEY = "0e38054687cf4b65a10ca66a05a6885e";
+	/**
+	 * save last search in a list of articles to be able to download it if necessary
+	 */
 	private List<Article> lastSearch;
 
 
@@ -206,10 +207,11 @@ public class Controller {
 
 
 	/**
-	 * save all URLs of the articles in one list and return it
+	 * save all URLs of the articles from the last search in one list of URLs and return it
 	 * @return List of Strings (URLs)
 	 */
 	public List<String> saveURLsInList() {
+
 		return lastSearch
 				.stream()
 				.filter(Objects::nonNull)
@@ -221,14 +223,13 @@ public class Controller {
 	 * Method thas is being called from UserInterface to make the downloader to process a particular strategy
 	 * (i.e. reference to Superclass Downloader) which is implemented differently in child classes
 	 * @param downloader - Object of Type Downloader to call the abstract process method
-	 * @throws DownloadException
 	 */
 	public void downloadArticles(Downloader downloader) {
-		//Downloader downloader = new SequentialDownloader();
-		long start = System.currentTimeMillis();
+
+		long startTime = System.currentTimeMillis();
 		downloader.process(saveURLsInList());
-		long end = System.currentTimeMillis();
-		System.out.println("Elapsed time in milliseconds: "+ (end - start));
+		long endTime = System.currentTimeMillis();
+		System.out.println("Elapsed time in milliseconds: "+ (endTime - startTime));
 	}
 
 

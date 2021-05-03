@@ -3,17 +3,14 @@ package newsreader.downloader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.*;
-import java.util.stream.Collectors;
 
 public class ParallelDownloader extends Downloader {
-
 
     /**
      * Process method creates a list of tasks (each article to be downloaded is treated as a separate task)
      * Then, an ExecutorService is created to start a ThreadPool and invoke oll the task on the same time
      * @param urls - list of URLs
      * @return - int coung - number of articles that have been downloaded
-     * @throws DownloadException - throws Exception if processing of any threads was unsuccessful
      */
     @Override
     public int process(List<String> urls) {
@@ -27,7 +24,6 @@ public class ParallelDownloader extends Downloader {
         try {
             stringFuture = executorService.invokeAll(taskList);
         } catch (InterruptedException e) {
-            //e.printStackTrace();
             System.out.println("Exception while invoking all threads for downloading articles: " + e.getMessage());
         }
         executorService.shutdown();
@@ -43,10 +39,8 @@ public class ParallelDownloader extends Downloader {
             } catch (InterruptedException e) {
                 System.out.println("Unable to finish the thread. The thread was interrupted: " + e.getMessage());
             } catch (ExecutionException e) {
-                System.out.println("Exception while downloading the article: " + e.getMessage());
+                System.out.println("Exception while attempting to retrieve the result of a task: " + e.getMessage());
             }
-
-
         }
 
         return count;

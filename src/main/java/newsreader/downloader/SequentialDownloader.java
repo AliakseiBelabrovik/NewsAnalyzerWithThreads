@@ -1,7 +1,6 @@
 package newsreader.downloader;
 
 import java.util.List;
-import java.util.Objects;
 
 public class SequentialDownloader extends Downloader {
 

@@ -13,7 +13,6 @@ import newsapi.NewsApi;
 import newsapi.NewsApiBuilder;
 import newsapi.NewsApiException;
 import newsapi.enums.*;
-import newsreader.downloader.DownloadException;
 import newsreader.downloader.Downloader;
 import newsreader.downloader.ParallelDownloader;
 import newsreader.downloader.SequentialDownloader;
@@ -37,7 +36,7 @@ public class UserInterface {
 					.setQ("")
 					.setEndPoint(Endpoint.TOP_HEADLINES)
 					.setSourceCountry(Country.at)
-					.setFrom("2021-04-20")
+					.setFrom("2021-04-29")
 					.setExcludeDomains("Lifehacker.com")
 					.setPageSize("50")
 					.setSortBy(SortBy.publishedAt)
@@ -257,13 +256,11 @@ public class UserInterface {
 		System.out.print("Please enter number of articles to search for between 1 and 100: ");
 		Double dNumber = readDouble(1, 100);
 		return Integer.toString(dNumber.intValue());
-
 	}
 
 	/**
 	 * Allows the user to download the articles sequentially
-	 * Creates a new SequentialDownloader of Type Downloader, then calls controller and catches
-	 * exceptions, if any.
+	 * Creates a new SequentialDownloader of Type Downloader, then calls controller
 	 */
 	public void downloadLastSearchSequentially() {
 		System.out.println("You have chosen to download URLs of the last search.");
@@ -274,8 +271,7 @@ public class UserInterface {
 
 	/**
 	 * Allows to download the articles in parallel.
-	 * Creates a new SequentialDownloader of Type Downloader, then calls controller and catches
-	 * exceptions, if any.
+	 * Creates a new SequentialDownloader of Type Downloader, then calls controller
 	 */
 	public void downloadLastSearchParallel() {
 		System.out.println("You have chosen to download URLs of the last search.");

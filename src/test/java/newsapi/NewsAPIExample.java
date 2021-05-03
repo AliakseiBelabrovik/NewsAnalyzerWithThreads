@@ -8,9 +8,7 @@ import newsapi.enums.Endpoint;
 
 import java.util.List;
 
-/**
- * I changed date in newsApi in .setFrom from 2020-03-20 to 2021-03-20
- */
+
 public class NewsAPIExample {
 
     public static final String APIKEY = "0e38054687cf4b65a10ca66a05a6885e";
